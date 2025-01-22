@@ -50,12 +50,24 @@ class DetailViewController: UIViewController {
 
         capacityLabel = UILabel()
         capacityLabel.font = UIFont.systemFont(ofSize: 20)
-        capacityLabel.text = "Capacity: \(device.data?.capacity ?? "")"
+        if let capacity =  device.data?.capacity {
+            capacityLabel.isHidden = false
+            capacityLabel.text = "Capacity: \(capacity)"
+        } else {
+            capacityLabel.isHidden = true
+        }
+        
         capacityLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(capacityLabel)
 
         descriptionLabel = UILabel()
         descriptionLabel.font = UIFont.systemFont(ofSize: 20)
+        if let description =  device.data?.description {
+            descriptionLabel.isHidden = false
+            descriptionLabel.text = "Capacity: \(description)"
+        } else {
+            descriptionLabel.isHidden = true
+        }
         descriptionLabel.text = "Description: \(device.data?.description ?? "")"
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
