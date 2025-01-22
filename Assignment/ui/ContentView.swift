@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Network
 
 class ContentViewController: UIViewController {
     
@@ -35,6 +36,7 @@ class ContentViewController: UIViewController {
         view.addSubview(searchField)
         view.addSubview(tableView)
         
+        let monitor = NWPathMonitor()
         
         NSLayoutConstraint.activate([
             searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -62,6 +64,19 @@ class ContentViewController: UIViewController {
         
         navigationItem.title = "Computers"
         view.backgroundColor = .white
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("Internet connection is available.")
+                // Perform actions when internet is available
+            } else {
+                print("Internet connection is not available.")
+               
+            }
+        }
+        
+        let queue = DispatchQueue(label: "NetworkMonitor")
+        monitor.start(queue: queue)
     }
     
     func fetchData() {
@@ -112,6 +127,11 @@ extension ContentViewController: UITextFieldDelegate {
         }
 
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        filteredArray = devices
+        self.tableView.reloadData()
     }
     
 }
